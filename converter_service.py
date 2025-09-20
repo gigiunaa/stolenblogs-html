@@ -1,7 +1,7 @@
 # converter_service.py
 # -*- coding: utf-8 -*-
 
-from flask import Flask, request, jsonify
+from flask import Flask, request, Response
 from bs4 import BeautifulSoup
 import urllib.parse
 
@@ -40,17 +40,15 @@ def convert_html():
         data = request.get_json(force=True)
         raw_html = data.get("html", "")
         if not raw_html:
-            return jsonify({"error": "Missing 'html' in body"}), 400
+            return Response('"html":"Missing html in body"', status=400, mimetype="text/plain")
 
         converted = convert_html_for_wix(raw_html)
 
-        # 🟢 აქ ვაბრუნებთ ისე, როგორც გჭირდება:
-        return jsonify({
-            "html": converted
-        })
+        # 🟢 აბრუნებს `"html":"<...>"` ფორმატში { } გარეშე
+        return Response(f'"html":"{converted}"', mimetype="text/plain")
 
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        return Response(f'"html":"ERROR: {str(e)}"', status=500, mimetype="text/plain")
 
 if __name__ == "__main__":
     # Render მოითხოვს 0.0.0.0:10000–ზე გაშვებას
