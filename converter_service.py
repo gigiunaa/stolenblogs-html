@@ -43,7 +43,11 @@ def convert_html():
             return jsonify({"error": "Missing 'html' in body"}), 400
 
         converted = convert_html_for_wix(raw_html)
-        return jsonify({"converted_html": converted})
+
+        # 🟢 აქ ვაბრუნებთ ისე, როგორც გჭირდება:
+        return jsonify({
+            "html": converted
+        })
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
