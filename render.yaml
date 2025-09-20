@@ -1,0 +1,6 @@
+services:
+  - type: web
+    name: converter-service
+    env: docker
+    plan: free
+    autoDeploy: true
